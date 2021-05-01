@@ -31,15 +31,10 @@ def probability(X, w):
     """
     Given input features and weights
     return predicted probabilities of y==1 given x, P(y=1|x), see description above
-
-    Don't forget to use expand(X) function (where necessary) in this and subsequent functions.
-
     :param X: feature matrix X of shape [n_samples,6] (expanded)
     :param w: weight vector w of shape [6] for each of the expanded features
     :returns: an array of predicted probabilities in [0,1] interval.
     """
-
-    # TODO:<your code here>
     return 1 / (1 + np.exp(-(np.dot(X, w))))
 
 def compute_loss(X,y,w):
@@ -100,6 +95,56 @@ for i in range(n_iter):
 
     # Keep in mind that compute_grad already does averaging over batch for you!
     w=w-eta*compute_grad(X_expanded[ind,:],y[ind],w)
+
+visualize(X, y, w, loss)
+plt.clf()
+
+
+np.random.seed(42)
+w = np.array([0, 0, 0, 0, 0, 1])
+
+eta = 0.05 # learning rate
+alpha = 0.9 # momentum
+nu = np.zeros_like(w)
+
+n_iter = 100
+batch_size = 4
+loss = np.zeros(n_iter)
+plt.figure(figsize=(12, 5))
+
+for i in range(n_iter):
+    ind = np.random.choice(X_expanded.shape[0], batch_size)
+    loss[i] = compute_loss(X_expanded, y, w)
+    if i % 10 == 0:
+        visualize(X_expanded[ind, :], y[ind], w, loss)
+    nu=alpha*nu+eta*compute_grad(X_expanded[ind,:],y[ind],w)
+    w=w-nu
+
+# visualize(X, y, w, loss)
+# plt.clf()
+
+np.random.seed(42)
+w = np.array([0, 0, 0, 0, 0, 1.])
+
+eta = 0.1 # learning rate
+alpha = 0.9 # moving average of gradient norm squared
+g2 = None # we start with None so that you can update this value correctly on the first iteration
+eps = 1e-8
+G = 0
+
+n_iter = 100
+batch_size = 4
+loss = np.zeros(n_iter)
+plt.figure(figsize=(12,5))
+for i in range(n_iter):
+    ind = np.random.choice(X_expanded.shape[0], batch_size)
+    loss[i] = compute_loss(X_expanded, y, w)
+    if i % 10 == 0:
+        visualize(X_expanded[ind, :], y[ind], w, loss)
+    g = compute_grad(X_expanded[ind,:],y[ind],w)
+    g2 = np.square(g)
+    G=alpha*G+(1-alpha)*g2
+    w=w-eta*g/(np.sqrt(G+eps))
 
 visualize(X, y, w, loss)
 plt.clf()
