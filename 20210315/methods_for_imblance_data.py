@@ -40,7 +40,24 @@ oversample = RandomOverSampler(sampling_strategy="minority",random_state=2020)
 X_over, y_over = oversample.fit_resample(x, y)
 x_train, x_test, y_train, y_test = train_test_split(X_over, y_over, test_size=0.2)
 model_oversample = lr.fit(x_train, y_train)
-y_predict=lr.predict(x_test)
+y_predict=model_oversample.predict(x_test)
 print(classification_report(y_test,y_predict))
+#SMOTE
+from imblearn.over_sampling import SMOTE
+X_resampled, y_resampled = SMOTE(random_state=2020).fit_resample(x, y)
+x_train, x_test, y_train, y_test = train_test_split(X_resampled, y_resampled, test_size=0.2)
+model_resample = lr.fit(x_train, y_train)
+y_predict=model_resample.predict(x_test)
+print(classification_report(y_test,y_predict))
+from imblearn.over_sampling import BorderlineSMOTE
+sm = BorderlineSMOTE(random_state=2020)
+X_res, y_res = sm.fit_resample(x, y)
+x_train, x_test, y_train, y_test = train_test_split(X_res, y_res, test_size=0.2)
+model_resample = lr.fit(x_train, y_train)
+y_predict=model_resample.predict(x_test)
+print(classification_report(y_test,y_predict))
+
+
+
 
 
