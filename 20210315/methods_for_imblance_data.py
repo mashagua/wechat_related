@@ -56,6 +56,35 @@ x_train, x_test, y_train, y_test = train_test_split(X_res, y_res, test_size=0.2)
 model_resample = lr.fit(x_train, y_train)
 y_predict=model_resample.predict(x_test)
 print(classification_report(y_test,y_predict))
+from imblearn.over_sampling import KMeansSMOTE
+sm = KMeansSMOTE(random_state=2020, cluster_balance_threshold=0.1)
+X_res, y_res = sm.fit_resample(x, y)
+x_train, x_test, y_train, y_test = train_test_split(X_res, y_res, test_size=0.2)
+model_resample = lr.fit(x_train, y_train)
+y_predict=model_resample.predict(x_test)
+print(classification_report(y_test,y_predict))
+from imblearn.over_sampling import SVMSMOTE
+sm = SVMSMOTE(random_state=2020)
+X_res, y_res = sm.fit_resample(x, y)
+x_train, x_test, y_train, y_test = train_test_split(X_res, y_res, test_size=0.2)
+model_resample = lr.fit(x_train, y_train)
+y_predict=model_resample.predict(x_test)
+print(classification_report(y_test,y_predict))
+from imblearn.over_sampling import ADASYN
+sm = ADASYN(random_state=2020)
+X_res, y_res = sm.fit_resample(x, y)
+x_train, x_test, y_train, y_test = train_test_split(X_res, y_res, test_size=0.2)
+model_resample = lr.fit(x_train, y_train)
+y_predict=model_resample.predict(x_test)
+print(classification_report(y_test,y_predict))
+from imblearn.over_sampling import SMOTENC
+sm = SMOTENC([1], random_state=42)
+X_res, y_res = sm.fit_resample(x, y)
+x_train, x_test, y_train, y_test = train_test_split(X_res, y_res, test_size=0.2)
+model_resample = lr.fit(x_train, y_train)
+y_predict=model_resample.predict(x_test)
+print(classification_report(y_test,y_predict))
+
 
 
 
